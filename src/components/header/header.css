@@ -1,0 +1,31 @@
+header .icon{
+    font-size: 28px;
+}
+
+header .MuiInputBase-input{
+    padding: 14px !important;
+}
+
+header .Mui-focused fieldset{
+border-color: white !important;
+}
+
+header .MuiInputLabel-outlined{
+    color: white !important;
+    background-color: #6200EA;
+    transform: translate(14px, 16px) scale(1) !important;
+}
+
+header .MuiInputLabel-shrink{
+    transform: translate(14px, -6px) scale(0.75) !important;
+
+}
+
+header fieldset{
+    top:0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.637) !important;
+}
+
+header .MuiIconButton-label{
+    color: white;
+}

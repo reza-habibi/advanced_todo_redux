@@ -1,0 +1,27 @@
+.modal-form .MuiInputBase-input {
+  padding: 14px !important;
+}
+
+.modal-form .Mui-focused fieldset {
+  border-color: gray !important;
+}
+
+.modal-form .MuiInputLabel-outlined {
+  background-color: #fff;
+  transform: translate(14px, 16px) scale(1) !important;
+}
+
+.modal-form .MuiInputLabel-shrink {
+  transform: translate(14px, -6px) scale(0.75) !important;
+}
+
+.modal-form fieldset {
+  top: 0 !important;
+}
+
+
+.rmdp-container  input {
+  width: 100% !important;
+  height: 2.9rem !important;
+  border: 1px solid #a3a3a3 !important;
+}

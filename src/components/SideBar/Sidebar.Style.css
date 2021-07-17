@@ -1,0 +1,29 @@
+.filters-section {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filters-section .MuiFormControl-root {
+  min-width: 200px;
+}
+
+.PrivateNotchedOutline-root-1 {
+  top: 0 !important;
+}
+
+.filters-section .MuiInputBase-input {
+  padding: 14px !important;
+}
+
+.filters-section .MuiInputLabel-outlined {
+  background-color: #fff;
+  transform: translate(14px, 16px) scale(1) !important;
+}
+.filters-section .MuiInputLabel-shrink {
+  transform: translate(14px, -6px) scale(0.75) !important;
+}
+
+

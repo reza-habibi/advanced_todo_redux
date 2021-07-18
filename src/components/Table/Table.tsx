@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -18,7 +19,7 @@ import {
 } from "react-icons/md";
 import TableBodyRow from "./TableBodyRow/TableBodyRow";
 import { TSortedList, TTask } from "../../Types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -28,12 +29,15 @@ const useStyles = makeStyles({
 export default function BasicTable(props: any) {
   const Tasks = useSelector((state: any) => state);
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [sort, setSort] = useState("");
 
   useEffect(() => {
     setTaskData(Tasks);
+    setCopyTask(Tasks);
   }, [Tasks]);
 
-  const [copyTask] = useState(Tasks);
+  const [copyTask, setCopyTask] = useState(Tasks);
   const [taskData, setTaskData] = useState([...Tasks]);
   const [sortedList, setSortedList] = useState<TSortedList>({
     priority: 0,
@@ -45,55 +49,51 @@ export default function BasicTable(props: any) {
   const [pageNumber, setPageNumber] = useState<number>(1);
 
   function changeSortButton(sort: string) {
-    sort === "priority" &&
-      (sortedList.priority < 2
-        ? setSortedList({
-            priority: sortedList.priority + 1,
-            status: 0,
-            deadline: 0,
-          })
-        : setSortedList({ priority: 0, status: 0, deadline: 0 }));
-
-    sort === "status" &&
-      (sortedList.status < 2
-        ? setSortedList({
-            priority: 0,
-            status: sortedList.status + 1,
-            deadline: 0,
-          })
-        : setSortedList({ priority: 0, status: 0, deadline: 0 }));
-
-    sort === "deadline" &&
-      (sortedList.deadline < 2
-        ? setSortedList({
-            priority: 0,
-            status: 0,
-            deadline: sortedList.deadline + 1,
-          })
-        : setSortedList({ priority: 0, status: 0, deadline: 0 }));
+    setSort(sort);
+    if (sort === "priority" && sortedList.priority < 2) {
+      setSortedList({
+        priority: sortedList.priority + 1,
+        status: 0,
+        deadline: 0,
+      });
+    } else if (sort === "status" && sortedList.status < 2) {
+      setSortedList({
+        priority: 0,
+        status: sortedList.status + 1,
+        deadline: 0,
+      });
+    } else if (sort === "deadline" && sortedList.deadline < 2) {
+      setSortedList({
+        priority: 0,
+        status: 0,
+        deadline: sortedList.deadline + 1,
+      });
+    } else {
+      setSortedList({
+        priority: 0,
+        status: 0,
+        deadline: 0,
+      });
+    }
   }
 
   useEffect(() => {
-    setTaskData([...Tasks]);
-    sortedList.status === 1 &&
-      setTaskData([...taskData.sort((a, b) => a.status - b.status)]);
-    sortedList.status === 2 &&
-      setTaskData([...taskData.sort((a, b) => b.status - a.status)]);
-
-    sortedList.priority === 1 &&
-      setTaskData([...taskData.sort((a, b) => a.priority - b.priority)]);
-    sortedList.priority === 2 &&
-      setTaskData([...taskData.sort((a, b) => b.priority - a.priority)]);
-
-    sortedList.deadline === 1 &&
-      setTaskData([
-        ...taskData.sort((a, b) => a.deadline.unix - b.deadline.unix),
-      ]);
-    sortedList.deadline === 2 &&
-      setTaskData([
-        ...taskData.sort((a, b) => b.deadline.unix - a.deadline.unix),
-      ]);
-  }, [sortedList, Tasks]);
+    if (
+      sortedList.priority === 1 ||
+      sortedList.status === 1 ||
+      sortedList.deadline === 1
+    ) {
+      dispatch({ type: "Sort_Down", payload: sort });
+    } else if (
+      sortedList.priority === 2 ||
+      sortedList.status === 2 ||
+      sortedList.deadline === 2
+    ) {
+      dispatch({ type: "Sort_Up", payload: sort });
+    } else {
+      dispatch({ type: "Not_Sort", payload: Tasks });
+    }
+  }, [sortedList, sort]);
 
   function handleEdit(index: number) {
     props.setOpen(true);
@@ -114,7 +114,7 @@ export default function BasicTable(props: any) {
 
   useEffect(() => {
     paginationValue !== 0
-      ? setPageCounts(taskData.length / paginationValue)
+      ? setPageCounts(Tasks.length / paginationValue)
       : setPageCounts(1);
     setTaskData([...taskData]);
   }, [paginationValue]);
@@ -252,12 +252,12 @@ export default function BasicTable(props: any) {
               onClick={() => changeSortButton("priority")}
             >
               Priority
-              {sortedList.priority === 0 ? (
-                <MdKeyboardArrowLeft size={24} />
+              {sortedList.priority === 2 ? (
+                <MdKeyboardArrowUp size={20} />
               ) : sortedList.priority === 1 ? (
                 <MdKeyboardArrowDown size={20} />
               ) : (
-                <MdKeyboardArrowUp size={20} />
+                <MdKeyboardArrowLeft size={20} />
               )}
             </TableCell>
             <TableCell
@@ -292,9 +292,10 @@ export default function BasicTable(props: any) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Tasks.filter((item: TTask) =>
-            item.task.toLowerCase().includes(props.filter.toLowerCase())
-          )
+          {taskData
+            .filter((item: TTask) =>
+              item.task.toLowerCase().includes(props.filter.toLowerCase())
+            )
             // eslint-disable-next-line array-callback-return
             .map((item: TTask, index: number) => {
               if (paginationValue !== 0) {

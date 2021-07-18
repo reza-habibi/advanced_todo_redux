@@ -64,10 +64,7 @@ const ModalForm = (props: any) => {
   };
 
   const editTask = (e: React.MouseEvent) => {
-    let oldTasks = Tasks;
-    oldTasks = oldTasks.filter(
-      (item: { id: number }) => item.id !== props.value.id
-    );
+    e.preventDefault();
     let editTask = newTask;
     if (value === new Date()) {
       editTask.deadline = props.value.deadline;

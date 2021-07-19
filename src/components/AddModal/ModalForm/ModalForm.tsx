@@ -108,8 +108,7 @@ const ModalForm = (props: any) => {
                 autoComplete="task"
                 name="task"
                 variant="outlined"
-                value={newTask.task?newTask.task:''}
-                required
+                value={props.viewMode ? props.value.task : newTask.task}
                 fullWidth
                 id="task"
                 label="New Task"
@@ -129,7 +128,9 @@ const ModalForm = (props: any) => {
                   id="demo-simple-select-outlined"
                   label="Priority"
                   name="priority"
-                  value={newTask.priority}
+                  value={
+                    props.viewMode ? props.value.priority : newTask.priority
+                  }
                   disabled={props.viewMode ? true : false}
                 >
                   <MenuItem value={1}>Low</MenuItem>
@@ -150,7 +151,7 @@ const ModalForm = (props: any) => {
                   label="Status"
                   name="status"
                   disabled={props.viewMode ? true : false}
-                  value={newTask.status}
+                  value={props.viewMode ? props.value.status : newTask.status}
                 >
                   <MenuItem value={1}>Todo</MenuItem>
                   <MenuItem value={2}>Doing</MenuItem>
@@ -160,7 +161,13 @@ const ModalForm = (props: any) => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <DatePicker
-                value={props.editMode ? props.value.deadline : value}
+                value={
+                  props.viewMode
+                    ? props.value.deadline
+                    : props.editMode
+                    ? props.value.deadline
+                    : value
+                }
                 onChange={setValue}
                 locale="fa"
                 calendar="persian"

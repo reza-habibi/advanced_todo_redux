@@ -19,6 +19,7 @@ import Container from "@material-ui/core/Container";
 import "./ModalFrom.Style.css";
 import { TNewTask, TTask } from "../../../Types";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,8 +51,8 @@ const ModalForm = (props: any) => {
   const [newTask, setNewTask] = useState<TNewTask>({
     id: props.editMode ? props.value.id : Tasks.length + 1,
     task: props.editMode ? props.value.task : "",
-    priority: props.editMode ? props.value.priority : 0,
-    status: props.editMode ? props.value.status : 0,
+    priority: props.editMode ? props.value.priority : 1,
+    status: props.editMode ? props.value.status : 1,
     deadline: props.editMode ? props.value.deadLine : 0,
     message: props.editMode ? props.value.message : "",
     unix: props.editMode ? props.value.unix : 0,
@@ -63,25 +64,34 @@ const ModalForm = (props: any) => {
     setNewTask({ ...newTask, [e.target.name]: e.target.value });
   };
 
+  let valueRegex = /^(?!\s*$).+/;
   const editTask = (e: React.MouseEvent) => {
     e.preventDefault();
-    let editTask = newTask;
-    if (value === new Date()) {
-      editTask.deadline = props.value.deadline;
+
+    if (valueRegex.test(newTask.task)) {
+      let editTask = newTask;
+      if (value === new Date()) {
+        editTask.deadline = props.value.deadline;
+      } else {
+        editTask.deadline = value;
+      }
+      dispatch({ type: "Update_Todo", payload: editTask });
+      props.onClick();
+      props.setValue("");
     } else {
-      editTask.deadline = value;
+      toast.error("Please fill in Task field correctly!");
     }
-    dispatch({ type: "Update_Todo", payload: editTask });
-    props.onClick();
-    props.setValue("");
   };
 
   const addTask = (e: React.MouseEvent) => {
     e.preventDefault();
-
-    newTask.deadline = value;
-    dispatch({ type: "Add_Todo", payload: newTask });
-    props.onClick();
+    if (valueRegex.test(newTask.task)) {
+      newTask.deadline = value;
+      dispatch({ type: "Add_Todo", payload: newTask });
+      props.onClick();
+    } else {
+      toast.error("Please fill in Task field correctly!");
+    }
   };
 
   return (
@@ -120,7 +130,7 @@ const ModalForm = (props: any) => {
                   id="demo-simple-select-outlined"
                   label="Priority"
                   name="priority"
-                  defaultValue={props.value.priority}
+                  defaultValue={props.value.priority ? props.value.priority : 1}
                   disabled={props.viewMode ? true : false}
                   required
                 >
@@ -143,7 +153,7 @@ const ModalForm = (props: any) => {
                   name="status"
                   required
                   disabled={props.viewMode ? true : false}
-                  defaultValue={props.value.status}
+                  defaultValue={props.value.status ? props.value.status : 1}
                 >
                   <MenuItem value={1}>Todo</MenuItem>
                   <MenuItem value={2}>Doing</MenuItem>

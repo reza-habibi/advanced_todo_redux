@@ -15,7 +15,6 @@ const App = () => {
     status: 0,
     deadline: 0,
     message: "",
-    unix: 0,
   });
   const [viewMode, setViewMode] = useState(false);
   const [editMode, setEditMode] = useState(false);

@@ -5,7 +5,6 @@ export type TNewTask = {
   deadline: any;
   message?: string;
   id: number;
-  unix:number
 };
 
 export type TTask = {
@@ -15,7 +14,6 @@ export type TTask = {
   deadline: any;
   message?: string;
   id: number;
-  unix:number;
 };
 
 export type TModal = {

@@ -40,7 +40,7 @@ function SelectBox(props: any) {
           id="demo-simple-select-outlined"
           label="priority"
           name="priority"
-          defaultValue={0}
+          value={props.filters.priority}
         >
           <MenuItem value={0}>All</MenuItem>
           <MenuItem value={1}>Low</MenuItem>
@@ -56,7 +56,7 @@ function SelectBox(props: any) {
           id="demo-simple-select-outlined"
           label="status"
           name="status"
-          defaultValue={0}
+          value={props.filters.status}
         >
           <MenuItem value={0}>All</MenuItem>
           <MenuItem value={1}>Todo</MenuItem>
@@ -72,7 +72,7 @@ function SelectBox(props: any) {
           id="demo-simple-select-outlined"
           label="deadline"
           name="deadline"
-          defaultValue={0}
+          value={props.filters.deadline}
         >
           <MenuItem value={0}>All</MenuItem>
           <MenuItem value={1}>Overdue</MenuItem>

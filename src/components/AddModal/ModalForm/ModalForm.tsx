@@ -53,9 +53,8 @@ const ModalForm = (props: any) => {
     task: props.editMode ? props.value.task : "",
     priority: props.editMode ? props.value.priority : 1,
     status: props.editMode ? props.value.status : 1,
-    deadline: props.editMode ? props.value.deadLine : 0,
+    deadline: props.editMode ? props.value.deadLine : value,
     message: props.editMode ? props.value.message : "",
-    unix: props.editMode ? props.value.unix : 0,
   });
 
   const getValue: any = (
@@ -109,7 +108,7 @@ const ModalForm = (props: any) => {
                 autoComplete="task"
                 name="task"
                 variant="outlined"
-                defaultValue={props.value.task ? props.value.task : ""}
+                value={newTask.task?newTask.task:''}
                 required
                 fullWidth
                 id="task"
@@ -130,9 +129,8 @@ const ModalForm = (props: any) => {
                   id="demo-simple-select-outlined"
                   label="Priority"
                   name="priority"
-                  defaultValue={props.value.priority ? props.value.priority : 1}
+                  value={newTask.priority}
                   disabled={props.viewMode ? true : false}
-                  required
                 >
                   <MenuItem value={1}>Low</MenuItem>
                   <MenuItem value={2}>Medium</MenuItem>
@@ -151,9 +149,8 @@ const ModalForm = (props: any) => {
                   id="demo-simple-select-outlined"
                   label="Status"
                   name="status"
-                  required
                   disabled={props.viewMode ? true : false}
-                  defaultValue={props.value.status ? props.value.status : 1}
+                  value={newTask.status}
                 >
                   <MenuItem value={1}>Todo</MenuItem>
                   <MenuItem value={2}>Doing</MenuItem>
@@ -177,7 +174,7 @@ const ModalForm = (props: any) => {
               className="w-100 my-3 p-3"
               aria-label="Your Message"
               rowsMin={3}
-              defaultValue={props.value.message}
+              value={newTask.message}
               placeholder="Your Message"
               name="message"
               disabled={props.viewMode ? true : false}
